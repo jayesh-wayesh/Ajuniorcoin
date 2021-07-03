@@ -1,16 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AjuniorcoinContext } from "./../hardhat/SymfoniContext";
+import Account from '../hooks/account';
+import SimpleCard from '../hooks/card'
 
 interface Props { }
 
+
 export const Ajuniorcoin: React.FC<Props> = () => {
+
     const ajc = useContext(AjuniorcoinContext)
-    const [inputAddress, setInputAddress] = useState("");
-    
+    const [amount, setAmount] = useState(0);
+    const [address,setAddress] = useState('not assigned')
+
     useEffect(() => {
         const doAsync = async () => {
             if (!ajc.instance) return
             console.log("Ajuniorcoin is deployed at ", ajc.instance.address)
+            const tx2 = await ajc.instance.owner()
         };
         doAsync();
     }, [ajc])
@@ -26,22 +32,10 @@ export const Ajuniorcoin: React.FC<Props> = () => {
         }
     }
 
-    const handleTransferToken = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        if (!ajc.instance) throw Error("Greeter instance not ready")
-        if (ajc.instance) {
-
-            const tx2 = await ajc.instance.transfer(inputAddress, 10)
-            await tx2.wait()
-
-        }
-    }
-
     return (
         <div>
-            <button onClick={(e) => handleTokenMinting(e)}>Mint Tokens</button>
-            <input onChange={(e) => setInputAddress(e.target.value)}></input>
-            <button onClick={(e) => handleTransferToken(e)}>Transfer Tokens</button>
+            {/* <button onClick={(e) => handleTokenMinting(e)}>Mint Tokens</button> */}
+            <SimpleCard/>
         </div>
     )
 }

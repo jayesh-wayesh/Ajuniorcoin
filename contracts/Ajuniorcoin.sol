@@ -8,7 +8,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Ajuniorcoin is ERC20, Ownable {
 
+    address private _owner;
+
     constructor() ERC20("Ajuniorcoin", "AJC") {
+        _owner = owner();
         _mint(msg.sender, 20);
         console.log('AJC deployed!');
     }
@@ -20,8 +23,20 @@ contract Ajuniorcoin is ERC20, Ownable {
     function mintTokens() public onlyOwner {
         console.log('msg.sender : ', msg.sender);
         console.log('balance earlier : ', balanceOf(msg.sender));
-        _mint(msg.sender, 20);
+        _mint(_owner, 20);
         console.log('balance after minting : ', balanceOf(msg.sender));
         console.log('owner', owner());
+    }
+
+    // INR to AJC
+    function transferToUser(address recipient, uint256 amount) public {
+        require(amount > 0);
+        _transfer(_owner, recipient, amount);
+    }
+
+    // AJC to INR
+    function transferFromUser(address sender, uint256 amount) public {
+        require(amount > 0);
+        _transfer(sender, _owner, amount);
     }
 }

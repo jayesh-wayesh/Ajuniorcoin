@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AjuniorcoinContext } from "../hardhat/SymfoniContext";
+import { AjuniorcoinContext, SignerContext } from "../hardhat/SymfoniContext";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -32,6 +32,8 @@ export default function SimpleCard(props) {
   const [expanded, setExpanded] = React.useState(false);
 
   const ajc = useContext(AjuniorcoinContext)
+  const [signer] = useContext(SignerContext)
+
   const [amount, setAmount] = useState(0);
   const [address,setAddress] = useState()
 
@@ -52,8 +54,22 @@ export default function SimpleCard(props) {
       if (ajc.instance && address.startsWith('0x')) {
           console.log("Transferring to : ", address)
 
+          // ajc.factory.
+          const myAddress = await signer.getAddress()
+          const bal = await ajc.instance.balanceOf(myAddress)
+          const bal3 = await ajc.instance.balanceOf(address)
+          console.log('myaddress : ', myAddress)
+          console.log('bal before : ', bal)
+          console.log('user address : ', bal3)
+
           const tx2 = await ajc.instance.transferToUser(address, amount);
           await tx2.wait()
+
+          const bal2 = await ajc.instance.balanceOf(myAddress)
+          const bal4 = await ajc.instance.balanceOf(address)
+          console.log('myaddress : ', myAddress)
+          console.log('bal after : ', bal2)
+          console.log('user address : ', bal4)
       }
   }
 

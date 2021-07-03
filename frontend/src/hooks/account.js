@@ -6,6 +6,7 @@ import { web3Modal } from './utils'
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import { useStyles } from './utils';
+import ajvc from './ajvc.png';
 
 
 export default function Account(props) {

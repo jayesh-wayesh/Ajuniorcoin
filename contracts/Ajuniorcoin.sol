@@ -23,7 +23,7 @@ contract Ajuniorcoin is ERC20, Ownable {
     function mintTokens() public onlyOwner {
         console.log('msg.sender : ', msg.sender);
         console.log('balance earlier : ', balanceOf(msg.sender));
-        _mint(_owner, 20);
+        _mint(_owner, 1000);
         console.log('balance after minting : ', balanceOf(msg.sender));
         console.log('owner', owner());
     }

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  z-index: -1;
 }
 
 .App-logo {
@@ -9,15 +10,8 @@
   position: absolute;
   left: 20px;
   top: 20px;
-  z-index: 10;
   font-size: 20px;
 }
-
-/* @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-} */
 
 .App-header {
   background-color: #191919;
@@ -34,22 +28,11 @@
   color: #61dafb;
 }
 
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
-
 /*** profile ****/
 .account{
   position: absolute;
   right: 20px;
   top: 10px;
-  z-index: 10;
   font-size: 20px;
 }
 
@@ -61,12 +44,4 @@
   font-size: 14px;
 
   margin-bottom: 10px;
-}
-
-.account .logout {
-  border-color: #600083;
-}
-
-.account .logout:hover {
-  border-color: #cbb4d4;
 }

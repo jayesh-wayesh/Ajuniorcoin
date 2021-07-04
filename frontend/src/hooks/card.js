@@ -23,19 +23,25 @@ import SendIcon from '@material-ui/icons/Send';
 import Account from './account';
 import {useStyles} from  './utils'
 import Profile from './profile'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 export default function SimpleCard(props) {
 
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-
   const ajc = useContext(AjuniorcoinContext)
   const [signer] = useContext(SignerContext)
-
   const [amount, setAmount] = useState(0);
   const [address,setAddress] = useState()
+  const [open, setOpen] = React.useState(false);
+
 
 
   useEffect(() => {
@@ -46,6 +52,20 @@ export default function SimpleCard(props) {
       };
       doAsync();
   }, [ajc])
+
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
 
   const handleTransferToken = async (e) => {
@@ -70,8 +90,11 @@ export default function SimpleCard(props) {
           console.log('myaddress : ', myAddress)
           console.log('bal after : ', bal2)
           console.log('user address : ', bal4)
+
+          handleClick()
+          setAmount(0)
       }
-  }
+    }
 
 
   return (
@@ -86,6 +109,11 @@ export default function SimpleCard(props) {
         <Profile
           username={address.startsWith('0x') ? address.slice(0,7) : address}
         />
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            Transaction complete !
+          </Alert>
+        </Snackbar>
         <Card className={classes.root}>
             <CardHeader
                 title="Buy AJVC Tokens"

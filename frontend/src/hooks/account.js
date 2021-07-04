@@ -38,7 +38,7 @@ export default function Account(props) {
     if (!web3Modal.cachedProvider) {
         modalButtons.push(
             <>
-                <h2>Connect to metamask 🦊</h2>
+                <h2><span>Connect to metamask</span> 🦊</h2>
                 <Button
                     variant="contained"
                     color="primary"

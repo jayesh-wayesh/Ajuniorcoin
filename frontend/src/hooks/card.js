@@ -25,6 +25,8 @@ import {useStyles} from  './utils'
 import Profile from './profile'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import SwapVerticalCircleRoundedIcon from '@material-ui/icons/SwapVerticalCircleRounded';
+import Chip from '@material-ui/core/Chip';
 
 
 function Alert(props) {
@@ -41,7 +43,7 @@ export default function SimpleCard(props) {
   const [amount, setAmount] = useState(0);
   const [address,setAddress] = useState()
   const [open, setOpen] = React.useState(false);
-
+  const [inrToAjc, setInrToAjc] = useState(true)
 
 
   useEffect(() => {
@@ -81,9 +83,14 @@ export default function SimpleCard(props) {
           console.log('myaddress : ', myAddress)
           console.log('bal before : ', bal)
           console.log('user address : ', bal3)
-
-          const tx2 = await ajc.instance.transferToUser(address, amount);
-          await tx2.wait()
+          
+          if(inrToAjc){
+            const tx2 = await ajc.instance.transferToUser(address, amount);
+            await tx2.wait()
+          }else{
+            const tx3= await ajc.instance.transferFromUser(address, amount);
+            await tx3.wait()
+          }
 
           const bal2 = await ajc.instance.balanceOf(myAddress)
           const bal4 = await ajc.instance.balanceOf(address)
@@ -95,6 +102,12 @@ export default function SimpleCard(props) {
           setAmount(0)
       }
     }
+  
+
+  const handleSwap = async (e) => {
+    e.preventDefault()
+    setInrToAjc(!inrToAjc)
+  }
 
 
   return (
@@ -105,7 +118,7 @@ export default function SimpleCard(props) {
       </>
     }
     {address && 
-      <>  
+      <div className={classes.mainBody}>  
         <Profile
           username={address.startsWith('0x') ? address.slice(0,7) : address}
         />
@@ -114,26 +127,30 @@ export default function SimpleCard(props) {
             Transaction complete !
           </Alert>
         </Snackbar>
+        <h2><span>Ajuniorcoin ($AJC)</span></h2>
         <Card className={classes.root}>
             <CardHeader
-                title="Buy AJVC Tokens"
-                subheader="Ajuniorcoin ($AJC) let's you do aswesome stuff!"
+                title="Token store"
+                subheader="$AJC let's you do aswesome stuff!"
             />
             <form className={classes.root} noValidate autoComplete="off">
                 <div className={classes.amount}>
                   <Avatar aria-label="recipe" className={classes.avatar}>
-                  ₹
+                    {inrToAjc ? "₹" : "A"}
                   </Avatar>
-                  <TextField id="outlined-basic" label="INR" value={amount} variant="outlined" onChange={(e) => setAmount(e.target.value)}/>
-                </div>
-                <div>
-                  <ArrowDownwardIcon/>
+                  <TextField id="outlined-basic" label={inrToAjc ? "INR" : "AJC"} value={amount} variant="outlined" onChange={(e) => setAmount(e.target.value)}/>
+                </div >
+                <div className={classes.amount}>
+                  <Button>
+                    <ArrowDownwardIcon onClick={handleSwap} />
+                  </Button>
+                  <Chip variant="outlined" disabled size="small" label={inrToAjc ? "1 INR = 1 AJC" : "1 AJC = 1 INR"} />
                 </div>
                 <div className={classes.amount}>
                   <Avatar aria-label="recipe" className={classes.avatar}>
-                    A
+                    {inrToAjc ? "A" : "₹"}
                   </Avatar>
-                  <TextField id="outlined-basic" label="AJC" value={amount} variant="outlined" />
+                  <TextField id="outlined-basic" label={inrToAjc ? "AJC" : "INR"} value={amount} variant="outlined" />
                 </div>
                 <Button
                   size="small"
@@ -147,7 +164,7 @@ export default function SimpleCard(props) {
                 </Button>
             </form>
         </Card>
-      </>
+      </div>
     }
     </>
   );

@@ -17,6 +17,11 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 
 export const useStyles = makeStyles((theme) => ({
+  mainBody: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   root: {
     maxWidth: 345,
   },

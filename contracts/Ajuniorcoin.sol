@@ -12,7 +12,7 @@ contract Ajuniorcoin is ERC20, Ownable {
 
     constructor() ERC20("Ajuniorcoin", "AJC") {
         _owner = owner();
-        _mint(msg.sender, 20);
+        _mint(msg.sender, 1000);
         console.log('AJC deployed!');
     }
 
